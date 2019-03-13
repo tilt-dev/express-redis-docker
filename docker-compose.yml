@@ -4,9 +4,7 @@ redis:
   expose:
     - 6379
 app:
-  build: ./
-  volumes:
-    - ./:/var/www/app
+  image: tilt.dev/express-redis-app
   links:
     - redis
   ports:
@@ -16,5 +14,5 @@ app:
     - NODE_ENV=development
     - PORT=3000
   command:
-    sh -c 'npm i && node server.js'
+    sh -c 'node server.js'
 
