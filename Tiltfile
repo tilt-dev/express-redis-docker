@@ -2,16 +2,18 @@
 
 docker_compose('docker-compose.yml')
 
-img = fast_build(
+docker_build(
   # Image name - must match the image in the docker-compose file
   'tilt.dev/express-redis-app',
-  # Dockerfile to use as a 'base'. Must not mount any files.
-  'Dockerfile',
-  # Command to run to start the process.
-  'node server.js')
+  # Docker context
+  '.',
+  live_update = [
+    # Sync local files into the container.
+    sync('.', '/var/www/app'),
 
-# Mount local files into the container.
-img.add('.', '/var/www/app')
+    # Re-run npm install whenever package.json changes.
+    run('npm i', trigger='package.json'),
 
-# Re-run npm install whenever package.json changes.
-img.run('npm i', trigger='package.json')
+    # Restart the process to pick up the changed files.
+    restart_container()
+  ])
