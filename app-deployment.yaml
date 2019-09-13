@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.18.0 (06a2e56)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: app
+    spec:
+      containers:
+      - args:
+        - sh
+        - -c
+        - node server.js
+        env:
+        - name: NODE_ENV
+          value: development
+        - name: PORT
+          value: "3000"
+        - name: REDIS_URL
+          value: redis://redis
+        image: tilt.dev/express-redis-app
+        name: app
+        ports:
+        - containerPort: 3000
+        resources: {}
+      restartPolicy: Always
+status: {}
