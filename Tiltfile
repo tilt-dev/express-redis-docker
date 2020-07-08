@@ -1,6 +1,31 @@
 # -*- mode: Python -*-
 
-docker_compose('docker-compose.yml')
+def write_file(path, contents):
+  local("echo \"{}\" > {}".format(contents, path))
+
+config = {
+  "redis": {
+    "image": "redis",
+    "container_name": "cache",
+    "expose": [6379],
+  },
+  "app": {
+    "image": "tilt.dev/express-redis-app",
+    "links": ["redis"],
+    "ports": ["3000:3000"],
+    "environment": [
+      "REDIS_URL=redis://cache",
+      "NODE_ENV=development",
+      "PORT=3000",
+    ],
+    "command": "sh -c 'node server.js'"
+  },
+}
+
+yaml = encode_yaml(config)
+write_file('docker-compose-generated.yml', yaml)
+
+docker_compose('docker-compose-generated.yml')
 
 docker_build(
   # Image name - must match the image in the docker-compose file
@@ -16,4 +41,6 @@ docker_build(
 
     # Restart the process to pick up the changed files.
     restart_container()
-  ])
+  ],
+  ignore=['docker-compose-generated.yml'],
+)
