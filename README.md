@@ -1,5 +1,7 @@
 # Example Express/Redis on Docker Compose app
 
+[![Build Status](https://circleci.com/gh/tilt-dev/tilt-example-docker-compose/tree/master.svg?style=shield)](https://circleci.com/gh/tilt-dev/tilt-example-docker-compose)
+
 Requirements: [Tilt](https://tilt.dev/)
 
 To start the app run:
