@@ -39,12 +39,13 @@ deployment_create(
 # Add labels to Docker services
 dc_resource('redis', labels=["database"])
 
-network_cmd = "echo No network {action} needed, using host.docker.internal"
-# network_cmd = "docker network {action} tilt-example-docker-compose_database kind-control-plane || true"
-
+if redis_host == 'host.docker.internal':
+    network_cmd = "echo No network {action} needed, using host.docker.internal"
+else:
+    network_cmd = "docker network {action} tilt-example-docker-compose_database kind-control-plane || true"
 action = 'connect'
 if config.tilt_subcommand == 'down':
     local(network_cmd.format(action='disconnect'))
-local_resource('network', network_cmd.format(action=action), resource_deps=["redis"])
+local_resource('network', network_cmd.format(action=action), resource_deps=["redis"], labels=["server"])
 
 k8s_resource('app', port_forwards=["3000"], labels=["server"], resource_deps=["redis", "network"])
