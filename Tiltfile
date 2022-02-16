@@ -4,11 +4,11 @@
 # https://docs.tilt.dev/api.html#api.version_settings
 version_settings(constraint='>=0.22.1')
 
-config.define_string('mode', usage='Whether to run with docker-compose only (--mode dc) or combined docker-compose+k8s (--mode both). Defaults to both.')
+config.define_string('mode', usage='Whether to run with docker-compose only (--mode dc) or combined docker-compose+k8s (--mode both). Defaults to dc.')
 config.define_string('network', usage='With --mode=both, whether to use docker network (--network docker) or host network (--network host). Defaults to host.')
 
 cfg = config.parse()
-mode = cfg.get('mode', 'both')
+mode = cfg.get('mode', 'dc')
 redis_host = 'host.docker.internal' # using host networking and ports mapped to host
 
 if cfg.get('network', 'host') == 'docker':
