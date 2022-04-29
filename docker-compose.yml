@@ -10,11 +10,11 @@ services:
     links:
       - redis
     ports:
-      - 3000:3000
+      - $PORT:$PORT
+    env_file:
+      - app.env
     environment:
-      - REDIS_URL=redis://cache
-      - NODE_ENV=development
-      - PORT=3000
+      - PORT=$PORT
     command:
       sh -c 'node server.js'
 
