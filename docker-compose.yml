@@ -7,6 +7,7 @@ services:
       - 6379
   app:
     image: tilt.dev/express-redis-app
+    profiles: [frontend]
     links:
       - redis
     ports:
