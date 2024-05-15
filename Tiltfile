@@ -4,7 +4,7 @@
 # https://docs.tilt.dev/api.html#api.version_settings
 version_settings(constraint='>=0.22.1')
 
-docker_compose('docker-compose.yml')
+docker_compose('docker-compose.yml', profiles=['*'])
 
 docker_build(
   # Image name - must match the image in the docker-compose file

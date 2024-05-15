@@ -2,6 +2,7 @@ version: "3.9"
 services:
   redis:
     image: redis
+    profiles: ['a']
     container_name: cache
     expose:
       - 6379
@@ -17,4 +18,3 @@ services:
       - PORT=3000
     command:
       sh -c 'node server.js'
-
